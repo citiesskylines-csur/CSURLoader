@@ -1,4 +1,0 @@
-C:\Work\roads\CSURLoader\CSURLoader\obj\Debug\netstandard1.0\CSURLoader.csprojAssemblyReference.cache
-C:\Work\roads\CSURLoader\CSURLoader\obj\Debug\netstandard1.0\CSURLoader.csproj.CoreCompileInputs.cache
-C:\Work\roads\CSURLoader\CSURLoader\obj\Debug\netstandard1.0\CSURLoader.AssemblyInfoInputs.cache
-C:\Work\roads\CSURLoader\CSURLoader\obj\Debug\netstandard1.0\CSURLoader.AssemblyInfo.cs
