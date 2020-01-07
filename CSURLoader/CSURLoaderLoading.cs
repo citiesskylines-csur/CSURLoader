@@ -23,7 +23,10 @@ namespace CSURLoader
                 NetInfo asset = PrefabCollection<NetInfo>.GetLoaded(i);
                 if (Utils.IsCSUR(asset))
                 {
-                    Utils.SetElevatedPillar(asset, Utils.GetPillar(asset));
+                    if (!CSUROffset.IsCSUR(loaded))
+                    {
+                        Utils.SetElevatedPillar(asset);
+                    }
                     Utils.ApplyTexture(asset);
                     Utils.SetOutsideConnection(asset);
                     if (Utils.IsCSURDerivative(asset))
