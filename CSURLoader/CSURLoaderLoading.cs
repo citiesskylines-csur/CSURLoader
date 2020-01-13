@@ -32,16 +32,8 @@ namespace CSURLoader
                     }    
                 }
             }
-           
-            // Needs to refresh existing networks, otherwise there will be LOD problems
-            for (ushort i = 0; i < NetManager.instance.m_nodes.m_size; i++)
-            {
-                NetInfo asset = NetManager.instance.m_nodes.m_buffer[i].Info;
-                if (Utils.IsCSUR(asset))
-                {
-                    NetManager.instance.UpdateNode(i);
-                }
-            }
+            Utils.SetSidewalkPillars();
+
         }
 
         // called when unloading begins

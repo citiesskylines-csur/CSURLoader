@@ -31,7 +31,8 @@ namespace CSURLoader
 
         public static bool IsCSUR(NetInfo asset)
         {
-            if (asset == null || asset.m_netAI.GetType() != typeof(RoadAI)) {
+            if (asset == null || asset.m_netAI.GetType() != typeof(RoadAI))
+            {
                 return false;
             }
             string savenameStripped = asset.name.Substring(asset.name.IndexOf('.') + 1);
@@ -166,9 +167,17 @@ namespace CSURLoader
             elevatedAI.m_outsideConnection = PrefabCollection<BuildingInfo>.FindLoaded("Road Connection");
             RoadBaseAI tunnelAI = netAI.m_tunnelInfo.m_netAI as RoadBaseAI;
             tunnelAI.m_outsideConnection = PrefabCollection<BuildingInfo>.FindLoaded("Road Connection");
-
         }
 
+        public static void SetSidewalkPillars()
+        {
+            PedestrianPathAI sidewalk = PrefabCollection<NetInfo>.FindLoaded("CSUR SidewalkWithBikeLane_Data").m_netAI as PedestrianPathAI;
+            PedestrianPathAI sidewalkBike = PrefabCollection<NetInfo>.FindLoaded("CSUR Sidewalk_Data").m_netAI as PedestrianPathAI;
+            PedestrianBridgeAI sidewalkElv = sidewalk.m_elevatedInfo.m_netAI as PedestrianBridgeAI;
+            PedestrianBridgeAI sidewalkBikeElv = sidewalkBike.m_elevatedInfo.m_netAI as PedestrianBridgeAI;
+            sidewalkElv.m_bridgePillarInfo = PrefabCollection<BuildingInfo>.FindLoaded("Pedestrian Elevated Pillar");
+            sidewalkBikeElv.m_bridgePillarInfo = PrefabCollection<BuildingInfo>.FindLoaded("Pedestrian Elevated Pillar");
+            Debug.Log("Successfully set sidewalk pillars");
+        }
     }
-
 }
