@@ -97,7 +97,6 @@ namespace CSURLoader
             ApplyTextureSingleMode(netAI.m_bridgeInfo);
             ApplyTextureSingleMode(netAI.m_slopeInfo);
             ApplyTextureSingleMode(netAI.m_tunnelInfo);
-
         }
 
         private static void ApplyTextureSingleMode(NetInfo asset)
@@ -110,8 +109,6 @@ namespace CSURLoader
                 if (key.StartsWith("CSUR_TEXTURE/"))
                 {
                     info.m_material = GetSharedMaterial(info.m_material);
-                    info.m_nodeMaterial = new Material(info.m_material);
-                    info.m_nodeMaterial.EnableKeyword("NET_NODE");
                 }
 
             }
@@ -122,10 +119,9 @@ namespace CSURLoader
                 if (key.StartsWith("CSUR_TEXTURE/"))
                 {
                     info.m_material = GetSharedMaterial(info.m_material);
-                    info.m_segmentMaterial = new Material(info.m_material);
-                    info.m_segmentMaterial.EnableKeyword("NET_SEGMENT");
                 }
             }
+            asset.InitializePrefab();
         }
 
         private static Material GetSharedMaterial(Material materialKey)
