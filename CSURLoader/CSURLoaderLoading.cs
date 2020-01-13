@@ -23,16 +23,13 @@ namespace CSURLoader
                 NetInfo asset = PrefabCollection<NetInfo>.GetLoaded(i);
                 if (Utils.IsCSUR(asset))
                 {
-                    if (!CSUROffset.IsCSUR(loaded))
-                    {
-                        Utils.SetElevatedPillar(asset);
-                    }
                     Utils.ApplyTexture(asset);
                     Utils.SetOutsideConnection(asset);
+                    Utils.SetColor(asset, new Color(0.5f, 0.5f, 0.5f));
                     if (Utils.IsCSURDerivative(asset))
                     {
                         Utils.LinkDerivative(asset);
-                    }
+                    }    
                 }
             }
            
