@@ -16,7 +16,7 @@ namespace CSURLoader
         // called when level is loaded
         public void OnLevelLoaded(LoadMode mode)
         {
-             // loads texture container
+            // loads texture container
             Utils.LoadTextures();
             for (uint i = 0; i < PrefabCollection<NetInfo>.LoadedCount(); i++)
             {
@@ -33,7 +33,10 @@ namespace CSURLoader
                 }
             }
             Utils.SetSidewalkPillars();
-
+            if (Utils.LOAD_LOD)
+            {
+                NetManager.instance.RebuildLods();
+            }
         }
 
         // called when unloading begins

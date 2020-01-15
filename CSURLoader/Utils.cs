@@ -15,6 +15,7 @@ namespace CSURLoader
 
         public static Dictionary<string, Material> textures;
 
+        public const bool LOAD_LOD = false;
 
         public static void LoadTextures()
         {
@@ -26,6 +27,10 @@ namespace CSURLoader
                 string textureKey = info.m_material.name;
                 Debug.Log($"loaded {textureKey}");
                 textures.Add("CSUR_TEXTURE/" + textureKey, info.m_material);
+                if (LOAD_LOD)
+                {
+                    textures.Add("CSUR_LODTEXTURE/" + textureKey, info.m_material);
+                }
             }
         }
 
@@ -110,6 +115,10 @@ namespace CSURLoader
                 if (key.StartsWith("CSUR_TEXTURE/"))
                 {
                     info.m_material = GetSharedMaterial(info.m_material);
+                    if (LOAD_LOD)
+                    {
+                        info.m_lodMaterial = GetSharedMaterial(info.m_lodMaterial);
+                    }
                 }
 
             }
@@ -120,6 +129,10 @@ namespace CSURLoader
                 if (key.StartsWith("CSUR_TEXTURE/"))
                 {
                     info.m_material = GetSharedMaterial(info.m_material);
+                    if (LOAD_LOD)
+                    {
+                        info.m_lodMaterial = GetSharedMaterial(info.m_lodMaterial);
+                    }
                 }
             }
             asset.InitializePrefab();
@@ -169,14 +182,25 @@ namespace CSURLoader
             tunnelAI.m_outsideConnection = PrefabCollection<BuildingInfo>.FindLoaded("Road Connection");
         }
 
+        public static void LinkSidewalkPillar(string prefabName, string pillar)
+        {
+            NetInfo pathInfo = PrefabCollection<NetInfo>.FindLoaded(prefabName);
+            if (pathInfo == null)
+            {
+                return;
+            }
+            PedestrianPathAI pathAI = pathInfo.m_netAI as PedestrianPathAI;
+            PedestrianBridgeAI pathElvAI = pathAI.m_elevatedInfo.m_netAI as PedestrianBridgeAI;
+            PedestrianBridgeAI pathBridgeAI = pathAI.m_bridgeInfo.m_netAI as PedestrianBridgeAI;
+            pathElvAI.m_bridgePillarInfo = PrefabCollection<BuildingInfo>.FindLoaded(pillar);
+            pathBridgeAI.m_bridgePillarInfo = PrefabCollection<BuildingInfo>.FindLoaded(pillar);
+        }
+
         public static void SetSidewalkPillars()
         {
-            PedestrianPathAI sidewalk = PrefabCollection<NetInfo>.FindLoaded("CSUR SidewalkWithBikeLane_Data").m_netAI as PedestrianPathAI;
-            PedestrianPathAI sidewalkBike = PrefabCollection<NetInfo>.FindLoaded("CSUR Sidewalk_Data").m_netAI as PedestrianPathAI;
-            PedestrianBridgeAI sidewalkElv = sidewalk.m_elevatedInfo.m_netAI as PedestrianBridgeAI;
-            PedestrianBridgeAI sidewalkBikeElv = sidewalkBike.m_elevatedInfo.m_netAI as PedestrianBridgeAI;
-            sidewalkElv.m_bridgePillarInfo = PrefabCollection<BuildingInfo>.FindLoaded("Pedestrian Elevated Pillar");
-            sidewalkBikeElv.m_bridgePillarInfo = PrefabCollection<BuildingInfo>.FindLoaded("Pedestrian Elevated Pillar");
+            LinkSidewalkPillar("CSUR Sidewalk 2_Data", "Pedestrian Elevated Pillar");
+            LinkSidewalkPillar("CSUR Sidewalk_Data", "Pedestrian Elevated Pillar");
+            LinkSidewalkPillar("CSUR SidewalkWithBikeLane__Data", "Pedestrian Elevated Pillar");
             Debug.Log("Successfully set sidewalk pillars");
         }
     }
