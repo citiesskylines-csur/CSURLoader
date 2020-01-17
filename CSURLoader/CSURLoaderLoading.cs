@@ -18,6 +18,7 @@ namespace CSURLoader
         {
             // loads texture container
             Utils.LoadTextures();
+            CSURLoaderMod.LoadSetting();
             for (uint i = 0; i < PrefabCollection<NetInfo>.LoadedCount(); i++)
             {
                 NetInfo asset = PrefabCollection<NetInfo>.GetLoaded(i);
@@ -25,7 +26,7 @@ namespace CSURLoader
                 {
                     Utils.ApplyTexture(asset);
                     Utils.SetOutsideConnection(asset);
-                    Utils.SetColor(asset, new Color(0.5f, 0.5f, 0.5f));
+                    Utils.SetColor(asset, new Color((float)CSURLoaderMod.colorR / 128f, (float)CSURLoaderMod.colorG / 128f, (float)CSURLoaderMod.colorB / 128f));
                     if (Utils.IsCSURDerivative(asset))
                     {
                         Utils.LinkDerivative(asset);
