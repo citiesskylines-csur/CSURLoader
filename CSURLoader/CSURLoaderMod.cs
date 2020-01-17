@@ -20,7 +20,7 @@ namespace CSURLoader
         public void OnSettingsUI(UIHelperBase helper)
         {
             LoadSetting();
-            UIHelperBase group = helper.AddGroup("CUSR Road Color Changer");
+            UIHelperBase group = helper.AddGroup("CSUR Road Color Changer");
             ColorRSlider = group.AddSlider("R" + "(" + colorR.ToString() + ")", 0, 256, 1, colorR, onColorRChanged) as UISlider;
             ColorRSlider.parent.Find<UILabel>("Label").width = 500f;
             ColorGSlider = group.AddSlider("G" + "(" + colorG.ToString() + ")", 0, 256, 1, colorG, onColorGChanged) as UISlider;
@@ -43,14 +43,7 @@ namespace CSURLoader
                     Utils.SetColor(asset, new Color((float)CSURLoaderMod.colorR / 128f, (float)CSURLoaderMod.colorG / 128f, (float)CSURLoaderMod.colorB / 128f));
                 }
             }
-            for (ushort i = 0; i < Singleton<NetManager>.instance.m_segments.m_size; i++)
-            {
-                NetInfo asset = Singleton<NetManager>.instance.m_segments.m_buffer[i].Info;
-                if (Utils.IsCSUR(asset))
-                {
-                    Singleton<NetManager>.instance.UpdateSegment(i);
-                }
-            }
+            Utils.ChangeRoadColor();
             Debug.Log($"colorR changed to" + newVal.ToString());
             SaveSetting();
         }
@@ -68,14 +61,7 @@ namespace CSURLoader
                     Utils.SetColor(asset, new Color((float)CSURLoaderMod.colorR / 128f, (float)CSURLoaderMod.colorG / 128f, (float)CSURLoaderMod.colorB / 128f));
                 }
             }
-            for (ushort i = 0; i < Singleton<NetManager>.instance.m_segments.m_size; i++)
-            {
-                NetInfo asset = Singleton<NetManager>.instance.m_segments.m_buffer[i].Info;
-                if (Utils.IsCSUR(asset))
-                {
-                    Singleton<NetManager>.instance.UpdateSegment(i);
-                }
-            }
+            Utils.ChangeRoadColor();
             Debug.Log($"colorG changed to" + newVal.ToString());
             SaveSetting();
         }
@@ -93,14 +79,7 @@ namespace CSURLoader
                     Utils.SetColor(asset, new Color((float)CSURLoaderMod.colorR / 128f, (float)CSURLoaderMod.colorG / 128f, (float)CSURLoaderMod.colorB / 128f));
                 }
             }
-            for (ushort i = 0; i < Singleton<NetManager>.instance.m_segments.m_size; i++)
-            {
-                NetInfo asset = Singleton<NetManager>.instance.m_segments.m_buffer[i].Info;
-                if (Utils.IsCSUR(asset))
-                {
-                    Singleton<NetManager>.instance.UpdateSegment(i);
-                }
-            }
+            Utils.ChangeRoadColor();
             Debug.Log($"colorB changed to" + newVal.ToString());
             SaveSetting();
         }

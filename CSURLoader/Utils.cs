@@ -203,5 +203,27 @@ namespace CSURLoader
             LinkSidewalkPillar("CSUR SidewalkWithBikeLane__Data", "Pedestrian Elevated Pillar");
             Debug.Log("Successfully set sidewalk pillars");
         }
+
+        public static void ChangeRoadColor()
+        {
+            for (ushort i = 0; i < Singleton<NetManager>.instance.m_segments.m_size; i++)
+            {
+                NetInfo asset = Singleton<NetManager>.instance.m_segments.m_buffer[i].Info;
+                if (Utils.IsCSUR(asset))
+                {
+                    Singleton<NetManager>.instance.UpdateSegmentRenderer(i, true);
+                }
+            }
+            for (ushort i = 0; i < Singleton<NetManager>.instance.m_nodes.m_size; i++)
+            {
+                NetInfo asset = Singleton<NetManager>.instance.m_nodes.m_buffer[i].Info;
+                if (Utils.IsCSUR(asset))
+                {
+                    Singleton<NetManager>.instance.UpdateNodeRenderer(i, true);
+                }
+            }
+            Singleton<NetManager>.instance.UpdateNodeColors();
+            Singleton<NetManager>.instance.UpdateSegmentColors();
+        }
     }
 }

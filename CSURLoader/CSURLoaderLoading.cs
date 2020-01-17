@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
+using ColossalFramework;
 
 namespace CSURLoader
 {
@@ -33,6 +34,8 @@ namespace CSURLoader
                     }    
                 }
             }
+            //Change All color
+            Utils.ChangeRoadColor();
             Utils.SetSidewalkPillars();
             if (Utils.LOAD_LOD)
             {
