@@ -19,7 +19,7 @@ namespace CSURLoader
         {
             // loads texture container
             Utils.LoadTextures();
-            CSURLoaderMod.LoadSetting();
+            OptionUI.LoadSetting();
             for (uint i = 0; i < PrefabCollection<NetInfo>.LoadedCount(); i++)
             {
                 NetInfo asset = PrefabCollection<NetInfo>.GetLoaded(i);
@@ -27,7 +27,7 @@ namespace CSURLoader
                 {
                     Utils.ApplyTexture(asset);
                     Utils.SetOutsideConnection(asset);
-                    Utils.SetColor(asset, new Color((float)CSURLoaderMod.colorR / 128f, (float)CSURLoaderMod.colorG / 128f, (float)CSURLoaderMod.colorB / 128f));
+                    Utils.SetColor(asset, RoadSkins.roadColor);
                     if (Utils.IsCSURDerivative(asset))
                     {
                         Utils.LinkDerivative(asset);
@@ -35,12 +35,13 @@ namespace CSURLoader
                 }
             }
             //Change All color
-            Utils.ChangeRoadColor();
-            Utils.SetSidewalkPillars();
+            RoadSkins.ChangeBuiltRoadColor();
+            RoadSkins.SetSidewalkPillars();
             if (Utils.LOAD_LOD)
             {
                 NetManager.instance.RebuildLods();
             }
+            OptionUI.levelLoaded = true;
         }
 
         // called when unloading begins
@@ -51,6 +52,7 @@ namespace CSURLoader
         // called when unloading finished
         public void OnReleased()
         {
+            OptionUI.levelLoaded = false;
         }
     }
 }
