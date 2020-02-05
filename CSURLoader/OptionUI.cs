@@ -145,6 +145,9 @@ namespace CSURLoader
                 if (!byte.TryParse(strLine, out colorG)) { colorG = 128; }
                 strLine = sr.ReadLine();
                 if (!byte.TryParse(strLine, out colorB)) { colorB = 128; }
+                RoadSkins.roadColor.r = colorR / 255f;
+                RoadSkins.roadColor.g = colorG / 255f;
+                RoadSkins.roadColor.b = colorB / 255f;
                 sr.Close();
                 fs.Close();
             }
