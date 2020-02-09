@@ -28,6 +28,14 @@ namespace CSURLoader
                 {
                     Utils.SetColor(asset, roadColor);
                 }
+                else if (OptionUI.changeAllRoadColor)
+                {
+                    if ((asset.m_netAI is RoadAI))
+                    {
+                        //Debug.Log("Process color change for " + asset.name.ToString());
+                        Utils.SetColor(asset, roadColor);
+                    }
+                }
             }
         }
 
