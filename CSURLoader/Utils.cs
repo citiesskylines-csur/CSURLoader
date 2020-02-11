@@ -9,13 +9,17 @@ namespace CSURLoader
 {
     class Utils
     {
-        private const string CSUR_REGEX = "CSUR(-(T|R|S))? ([[1-9]?[0-9]D?(L|S|C|R)[1-9]*P?)+(=|-)?([[1-9]?[0-9]D?(L|S|C|R)[1-9]*P?)*";
-        public const string CSUR_DUAL_REGEX = "CSUR(-(T|R|S))? ([[1-9]?[0-9]D(L|S|C|R)[1-9]*P?)+(=|-)?([[1-9]?[0-9]D?(L|S|C|R)[1-9]*P?)*";
-        public const string CSUR_OFFSET_REGEX = "CSUR(-(T|R|S))? ([[1-9]?[0-9](L|R)[1-9]*P?)+(=|-)?([[1-9]?[0-9](L|R)[1-9]*P?)*";
+        private const string CSUR_REGEX = "CSUR(-(T|R|S))? ([[1-9]?[0-9]D?(L|S|C|R)[0-9]*P?)+(=|-)?([[1-9]?[0-9]D?(L|S|C|R)[0-9]*P?)*";
 
         public static Dictionary<string, Material> textures;
 
         public const bool LOAD_LOD = false;
+
+
+        public static string FStrip(string str, char c)
+        {
+            return str.Substring(str.IndexOf(c) + 1);
+        }
 
         public static void LoadTextures()
         {
@@ -40,9 +44,15 @@ namespace CSURLoader
             {
                 return false;
             }
-            string savenameStripped = asset.name.Substring(asset.name.IndexOf('.') + 1);
+            string savenameStripped = FStrip(asset.name, '.');
             Match m = Regex.Match(savenameStripped, CSUR_REGEX, RegexOptions.IgnoreCase);
             return m.Success;
+        }
+
+        // NOTE: this assumes that the asset is already CSUR
+        public static bool IsTwoWayCSUR(NetInfo asset)
+        {
+            return asset.name.Contains("D") || asset.name.Contains("-");
         }
 
         public static bool IsCSURDerivative(NetInfo asset)

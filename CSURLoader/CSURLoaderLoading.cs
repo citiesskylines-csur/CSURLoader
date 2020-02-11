@@ -27,16 +27,29 @@ namespace CSURLoader
                 {
                     Utils.ApplyTexture(asset);
                     Utils.SetOutsideConnection(asset);
+                    if (Utils.IsTwoWayCSUR(asset))
+                    {
+                        RoadSkins.ReplaceTrafficLights(asset);
+                        RoadSkins.ReplaceMedianSigns(asset);
+                        RoadSkins.ToggleCameras(asset);
+                    }
+
                     Utils.SetColor(asset, RoadSkins.roadColor);
                     if (Utils.IsCSURDerivative(asset))
                     {
+                        if (asset.name.Contains("express"))
+                        {
+                            RoadSkins.DisableStructure(asset);
+                        }
                         Utils.LinkDerivative(asset);
-                    }    
+                    }
                 }
             }
+            RoadSkins.SetSidewalkPillars();
             //Change All color
             RoadSkins.ChangeBuiltRoadColor();
-            RoadSkins.SetSidewalkPillars();
+            //Refresh networks to apply skin change
+            RoadSkins.RefreshNetworks();
             if (Utils.LOAD_LOD)
             {
                 NetManager.instance.RebuildLods();
