@@ -15,6 +15,7 @@ namespace CSURLoader
         static UISlider ColorGSlider;
         static UISlider ColorBSlider;
         static bool grayscale;
+        public static bool changeAllRoadColor = false;
         public static bool levelLoaded;
 
         public static void OnSettingsUI(UIHelperBase helper)
@@ -28,6 +29,7 @@ namespace CSURLoader
             ColorBSlider = roadColorGroup.AddSlider("B" + "(" + colorB.ToString() + ")", 0, 255, 1, colorB, OnBlueSliderChanged) as UISlider;
             ColorBSlider.parent.Find<UILabel>("Label").width = 500f;
             roadColorGroup.AddCheckbox("Change all sliders together", grayscale, (index) => OnGrayscaleSet(index));
+            roadColorGroup.AddCheckbox("Also change other road color", changeAllRoadColor, (index) => OnChangeAllRoadColorSet(index));
             SaveSetting();
         }
 
@@ -36,7 +38,11 @@ namespace CSURLoader
             grayscale = index;
             SaveSetting();
         }
-
+        private static void OnChangeAllRoadColorSet(bool index)
+        {
+            changeAllRoadColor = index;
+            SaveSetting();
+        }
 
         private static void OnAllSlidersChanged(float newVal)
         {
@@ -129,6 +135,7 @@ namespace CSURLoader
             streamWriter.WriteLine(colorR);
             streamWriter.WriteLine(colorG);
             streamWriter.WriteLine(colorB);
+            streamWriter.WriteLine(changeAllRoadColor);
             streamWriter.Flush();
             fs.Close();
         }
@@ -145,6 +152,11 @@ namespace CSURLoader
                 if (!byte.TryParse(strLine, out colorG)) { colorG = 128; }
                 strLine = sr.ReadLine();
                 if (!byte.TryParse(strLine, out colorB)) { colorB = 128; }
+                strLine = sr.ReadLine();
+                if (strLine == "True")
+                    changeAllRoadColor = true;
+                else
+                    changeAllRoadColor = false;
                 RoadSkins.roadColor.r = colorR / 255f;
                 RoadSkins.roadColor.g = colorG / 255f;
                 RoadSkins.roadColor.b = colorB / 255f;
