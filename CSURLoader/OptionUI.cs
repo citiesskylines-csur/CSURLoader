@@ -15,8 +15,7 @@ namespace CSURLoader
         static UISlider ColorGSlider;
         static UISlider ColorBSlider;
         static bool grayscale;
-
-
+        public static bool changeAllRoadColor = false;
         public static bool levelLoaded;
 
         public static void OnSettingsUI(UIHelperBase helper)
@@ -30,7 +29,7 @@ namespace CSURLoader
             ColorBSlider = roadColorGroup.AddSlider("B" + "(" + colorB.ToString() + ")", 0, 255, 1, colorB, OnBlueSliderChanged) as UISlider;
             ColorBSlider.parent.Find<UILabel>("Label").width = 500f;
             roadColorGroup.AddCheckbox("Change all sliders together", grayscale, (index) => OnGrayscaleSet(index));
-
+            roadColorGroup.AddCheckbox("Also change other road color", changeAllRoadColor, (index) => OnChangeAllRoadColorSet(index));
             UIHelperBase roadSkinGroup = helper.AddGroup("CSUR Road Prop Settings (Will take effect after next load)");
             roadSkinGroup.AddDropdown("Traffic Lights", RoadSkins.trafficLightsAvailable, RoadSkins.itrafficLight, (index) => OnTrafficLightSet(index));
             roadSkinGroup.AddDropdown("Median Signs", RoadSkins.medianSignsAvailable, RoadSkins.imedianSign, (index) => OnMedianSignSet(index));
@@ -76,7 +75,11 @@ namespace CSURLoader
             grayscale = index;
             SaveSetting();
         }
-
+        private static void OnChangeAllRoadColorSet(bool index)
+        {
+            changeAllRoadColor = index;
+            SaveSetting();
+        }
 
         private static void OnAllSlidersChanged(float newVal)
         {
@@ -167,6 +170,7 @@ namespace CSURLoader
             streamWriter.WriteLine(RoadSkins.imedianSign);
             streamWriter.WriteLine(RoadSkins.useCamera);
             streamWriter.WriteLine(RoadSkins.disableExpressWalls);
+            streamWriter.WriteLine(changeAllRoadColor);
             streamWriter.Flush();
             fs.Close();
         }
@@ -191,6 +195,8 @@ namespace CSURLoader
                 if (!bool.TryParse(strLine, out RoadSkins.useCamera)) { RoadSkins.useCamera = true; }
                 strLine = sr.ReadLine();
                 if (!bool.TryParse(strLine, out RoadSkins.disableExpressWalls)) { RoadSkins.disableExpressWalls = false; }
+                strLine = sr.ReadLine();
+                if (!bool.TryParse(strLine, out changeAllRoadColor)) { changeAllRoadColor = false; }
                 RoadSkins.roadColor.r = colorR / 255f;
                 RoadSkins.roadColor.g = colorG / 255f;
                 RoadSkins.roadColor.b = colorB / 255f;
