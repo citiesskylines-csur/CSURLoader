@@ -1,0 +1,11 @@
+﻿road_color_setting	CSUR路颜色设置
+change_all_sliders	改变所有的拖动条
+change_other_color	同样改变其它路的颜色
+road_prop_setting	CSUR路摆件设置(下次加载游戏生效)
+road_arrows	道路箭头
+traffic_lights	交通信号灯
+median_signs	分隔带
+traffic_cameras	交警探头
+district_policy_setting	CSUR路区域政策设置(下次加载游戏生效)
+tip1	用禁止自行车政策选择是否出现高速路护栏
+tip2	用禁止自行车政策选择是否出现隧道实线
