@@ -31,11 +31,17 @@ namespace CSURLoader
             roadColorGroup.AddCheckbox("Change all sliders together", grayscale, (index) => OnGrayscaleSet(index));
             roadColorGroup.AddCheckbox("Also change other road color", changeAllRoadColor, (index) => OnChangeAllRoadColorSet(index));
             UIHelperBase roadSkinGroup = helper.AddGroup("CSUR Road Prop Settings (Will take effect after next load)");
+            roadSkinGroup.AddDropdown("Road Arrows", RoadSkins.roadArrowsAvailable, RoadSkins.iroadArrow, (index) => OnRoadArrowSet(index));
             roadSkinGroup.AddDropdown("Traffic Lights", RoadSkins.trafficLightsAvailable, RoadSkins.itrafficLight, (index) => OnTrafficLightSet(index));
             roadSkinGroup.AddDropdown("Median Signs", RoadSkins.medianSignsAvailable, RoadSkins.imedianSign, (index) => OnMedianSignSet(index));
             roadSkinGroup.AddCheckbox("Traffic Cameras", RoadSkins.useCamera, (index) => OnCameraSet(index));
-            roadSkinGroup.AddCheckbox("Trigger retaining walls for non-sidewalk roads using Bike Ban policy",
-                RoadSkins.disableExpressWalls, (index) => OnDisableExpressWallsSet(index));
+
+
+            UIHelperBase policyToggleGroup = helper.AddGroup("CSUR District Policy Toggling Settings (Will take effect after next load)");
+            policyToggleGroup.AddCheckbox("Trigger retaining walls for non-sidewalk roads using Bike Ban policy",
+                RoadSkins.policyToggleExpressWalls, (index) => OnToggleExpressWallsSet(index));
+            policyToggleGroup.AddCheckbox("Trigger solid lines for slope and tunnel modes using Bike Ban policy",
+                RoadSkins.policyInvertUnderground, (index) => OnPolicyInvertUndergroundSet(index));
 
 
             SaveSetting();
@@ -45,6 +51,13 @@ namespace CSURLoader
         private static void OnTrafficLightSet(int index)
         {
             RoadSkins.itrafficLight = (byte) index;
+            //if (levelLoaded) RoadSkins.UpdateSkins();
+            SaveSetting();
+        }
+
+        private static void OnRoadArrowSet(int index)
+        {
+            RoadSkins.iroadArrow = (byte)index;
             //if (levelLoaded) RoadSkins.UpdateSkins();
             SaveSetting();
         }
@@ -63,10 +76,16 @@ namespace CSURLoader
             SaveSetting();
         }
 
-        private static void OnDisableExpressWallsSet(bool index)
+        private static void OnToggleExpressWallsSet(bool index)
         {
-            RoadSkins.disableExpressWalls = index;
+            RoadSkins.policyToggleExpressWalls = index;
             //if (levelLoaded) RoadSkins.UpdateSkins();
+            SaveSetting();
+        }
+
+        private static void OnPolicyInvertUndergroundSet(bool index)
+        {
+            RoadSkins.policyInvertUnderground = index;
             SaveSetting();
         }
 
@@ -166,11 +185,13 @@ namespace CSURLoader
             streamWriter.WriteLine(colorR);
             streamWriter.WriteLine(colorG);
             streamWriter.WriteLine(colorB);
+            streamWriter.WriteLine(changeAllRoadColor);
+            streamWriter.WriteLine(RoadSkins.iroadArrow);
             streamWriter.WriteLine(RoadSkins.itrafficLight);
             streamWriter.WriteLine(RoadSkins.imedianSign);
             streamWriter.WriteLine(RoadSkins.useCamera);
-            streamWriter.WriteLine(RoadSkins.disableExpressWalls);
-            streamWriter.WriteLine(changeAllRoadColor);
+            streamWriter.WriteLine(RoadSkins.policyToggleExpressWalls);
+            streamWriter.WriteLine(RoadSkins.policyInvertUnderground);
             streamWriter.Flush();
             fs.Close();
         }
@@ -188,15 +209,19 @@ namespace CSURLoader
                 strLine = sr.ReadLine();
                 if (!byte.TryParse(strLine, out colorB)) { colorB = 128; }
                 strLine = sr.ReadLine();
+                if (!bool.TryParse(strLine, out changeAllRoadColor)) { changeAllRoadColor = false; }
+                strLine = sr.ReadLine();
+                if (!byte.TryParse(strLine, out RoadSkins.iroadArrow)) { RoadSkins.iroadArrow = 1; }
+                strLine = sr.ReadLine();
                 if (!byte.TryParse(strLine, out RoadSkins.itrafficLight)) { RoadSkins.itrafficLight = 1; }
                 strLine = sr.ReadLine();
                 if (!byte.TryParse(strLine, out RoadSkins.imedianSign)) { RoadSkins.imedianSign = 1; }
                 strLine = sr.ReadLine();
                 if (!bool.TryParse(strLine, out RoadSkins.useCamera)) { RoadSkins.useCamera = true; }
                 strLine = sr.ReadLine();
-                if (!bool.TryParse(strLine, out RoadSkins.disableExpressWalls)) { RoadSkins.disableExpressWalls = false; }
+                if (!bool.TryParse(strLine, out RoadSkins.policyToggleExpressWalls)) { RoadSkins.policyToggleExpressWalls = false; }
                 strLine = sr.ReadLine();
-                if (!bool.TryParse(strLine, out changeAllRoadColor)) { changeAllRoadColor = false; }
+                if (!bool.TryParse(strLine, out RoadSkins.policyInvertUnderground)) { RoadSkins.policyInvertUnderground = false; }
                 RoadSkins.roadColor.r = colorR / 255f;
                 RoadSkins.roadColor.g = colorG / 255f;
                 RoadSkins.roadColor.b = colorB / 255f;

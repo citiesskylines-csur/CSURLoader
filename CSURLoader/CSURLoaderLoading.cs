@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
-using ColossalFramework;
+using ColossalFramework.UI;
 
 namespace CSURLoader
 {
@@ -18,7 +18,15 @@ namespace CSURLoader
         public void OnLevelLoaded(LoadMode mode)
         {
             // loads texture container
-            Utils.LoadTextures();
+            if (!Utils.LoadTextures())
+            {
+                ExceptionPanel panel = UIView.library.ShowModal<ExceptionPanel>("ExceptionPanel", true);
+                panel.SetMessage("CSUR Loader", "Road texture not found. This indicates that " +
+                    $"the asset containing textures for CSUR roads are not loaded into the game. " +
+                    $"Please check if the file CSURTextureContainer.crp is present in the workshop" +
+                    $"folder for CSUR Loader.", true);
+                return;
+            }
             OptionUI.LoadSetting();
             for (uint i = 0; i < PrefabCollection<NetInfo>.LoadedCount(); i++)
             {
@@ -27,21 +35,19 @@ namespace CSURLoader
                 {
                     Utils.ApplyTexture(asset);
                     Utils.SetOutsideConnection(asset);
+                    Utils.ApplyGeneralSkins(asset);
                     if (Utils.IsTwoWayCSUR(asset))
                     {
-                        RoadSkins.ReplaceTrafficLights(asset);
-                        RoadSkins.ReplaceMedianSigns(asset);
-                        RoadSkins.ToggleCameras(asset);
+                        Utils.ApplyIntersectionSkins(asset);
                     }
 
                     Utils.SetColor(asset, RoadSkins.roadColor);
                     if (Utils.IsCSURDerivative(asset))
                     {
-                        if (asset.name.Contains("express"))
-                        {
-                            RoadSkins.DisableStructure(asset);
-                        }
                         Utils.LinkDerivative(asset);
+                    } else
+                    {
+                        Utils.LinkBridgeMode(asset);
                     }
                 }
                 else if (OptionUI.changeAllRoadColor)

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using ColossalFramework;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Reflection;
@@ -21,10 +20,13 @@ namespace CSURLoader
             return str.Substring(str.IndexOf(c) + 1);
         }
 
-        public static void LoadTextures()
+        public static bool LoadTextures()
         {
-            // TODO: load texture container within mod
             NetInfo container = PrefabCollection<NetInfo>.FindLoaded("CSURTextureContainer_Data");
+            if (container == null)
+            {
+                return false;
+            }
             foreach (NetInfo.Segment info in container.m_segments)
             {
                 // lod material main texture name is TEXNAME_lod
@@ -36,6 +38,7 @@ namespace CSURLoader
                     textures.Add("CSUR_LODTEXTURE/" + textureKey, info.m_material);
                 }
             }
+            return true;
         }
 
         public static bool IsCSUR(NetInfo asset)
@@ -181,6 +184,12 @@ namespace CSURLoader
             }
         }
 
+        public static void LinkBridgeMode(NetInfo asset)
+        {
+            RoadAI netAI = asset.m_netAI as RoadAI;
+            netAI.m_bridgeInfo = netAI.m_elevatedInfo;
+        }
+
 
         public static void SetOutsideConnection(NetInfo asset)
         {
@@ -190,6 +199,23 @@ namespace CSURLoader
             elevatedAI.m_outsideConnection = PrefabCollection<BuildingInfo>.FindLoaded("Road Connection");
             RoadBaseAI tunnelAI = netAI.m_tunnelInfo.m_netAI as RoadBaseAI;
             tunnelAI.m_outsideConnection = PrefabCollection<BuildingInfo>.FindLoaded("Road Connection");
+        }
+
+        public static void ApplyGeneralSkins(NetInfo asset)
+        {
+            if (asset.name.Contains("express"))
+            {
+                RoadSkins.ToggleStructure(asset);
+            }
+            RoadSkins.InvertUndergroundPolicyToggle(asset);
+            RoadSkins.ReplaceArrows(asset);
+        }
+
+        public static void ApplyIntersectionSkins(NetInfo asset)
+        {
+            RoadSkins.ReplaceTrafficLights(asset);
+            RoadSkins.ReplaceMedianSigns(asset);
+            RoadSkins.ToggleCameras(asset);
         }
 
     }
