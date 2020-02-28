@@ -21,26 +21,26 @@ namespace CSURLoader
         public static void OnSettingsUI(UIHelperBase helper)
         {
             LoadSetting();
-            UIHelperBase roadColorGroup = helper.AddGroup("CSUR Road Color Settings");
+            UIHelperBase roadColorGroup = helper.AddGroup(Localization.Get("road_color_setting"));
             ColorRSlider = roadColorGroup.AddSlider("R" + "(" + colorR.ToString() + ")", 0, 255, 1, colorR, OnRedSliderChanged) as UISlider;
             ColorRSlider.parent.Find<UILabel>("Label").width = 500f;
             ColorGSlider = roadColorGroup.AddSlider("G" + "(" + colorG.ToString() + ")", 0, 255, 1, colorG, OnGreenSliderChanged) as UISlider;
             ColorGSlider.parent.Find<UILabel>("Label").width = 500f;
             ColorBSlider = roadColorGroup.AddSlider("B" + "(" + colorB.ToString() + ")", 0, 255, 1, colorB, OnBlueSliderChanged) as UISlider;
             ColorBSlider.parent.Find<UILabel>("Label").width = 500f;
-            roadColorGroup.AddCheckbox("Change all sliders together", grayscale, (index) => OnGrayscaleSet(index));
-            roadColorGroup.AddCheckbox("Also change other road color", changeAllRoadColor, (index) => OnChangeAllRoadColorSet(index));
-            UIHelperBase roadSkinGroup = helper.AddGroup("CSUR Road Prop Settings (Will take effect after next load)");
-            roadSkinGroup.AddDropdown("Road Arrows", RoadSkins.roadArrowsAvailable, RoadSkins.iroadArrow, (index) => OnRoadArrowSet(index));
-            roadSkinGroup.AddDropdown("Traffic Lights", RoadSkins.trafficLightsAvailable, RoadSkins.itrafficLight, (index) => OnTrafficLightSet(index));
-            roadSkinGroup.AddDropdown("Median Signs", RoadSkins.medianSignsAvailable, RoadSkins.imedianSign, (index) => OnMedianSignSet(index));
-            roadSkinGroup.AddCheckbox("Traffic Cameras", RoadSkins.useCamera, (index) => OnCameraSet(index));
+            roadColorGroup.AddCheckbox(Localization.Get("change_all_sliders"), grayscale, (index) => OnGrayscaleSet(index));
+            roadColorGroup.AddCheckbox(Localization.Get("change_other_color"), changeAllRoadColor, (index) => OnChangeAllRoadColorSet(index));
+            UIHelperBase roadSkinGroup = helper.AddGroup(Localization.Get("road_prop_setting"));
+            roadSkinGroup.AddDropdown(Localization.Get("road_arrows"), RoadSkins.roadArrowsAvailable, RoadSkins.iroadArrow, (index) => OnRoadArrowSet(index));
+            roadSkinGroup.AddDropdown(Localization.Get("traffic_lights"), RoadSkins.trafficLightsAvailable, RoadSkins.itrafficLight, (index) => OnTrafficLightSet(index));
+            roadSkinGroup.AddDropdown(Localization.Get("median_signs"), RoadSkins.medianSignsAvailable, RoadSkins.imedianSign, (index) => OnMedianSignSet(index));
+            roadSkinGroup.AddCheckbox(Localization.Get("traffic_cameras"), RoadSkins.useCamera, (index) => OnCameraSet(index));
 
 
-            UIHelperBase policyToggleGroup = helper.AddGroup("CSUR District Policy Toggling Settings (Will take effect after next load)");
-            policyToggleGroup.AddCheckbox("Trigger retaining walls for non-sidewalk roads using Bike Ban policy",
+            UIHelperBase policyToggleGroup = helper.AddGroup(Localization.Get("district_policy_setting"));
+            policyToggleGroup.AddCheckbox(Localization.Get("tip1"),
                 RoadSkins.policyToggleExpressWalls, (index) => OnToggleExpressWallsSet(index));
-            policyToggleGroup.AddCheckbox("Trigger solid lines for slope and tunnel modes using Bike Ban policy",
+            policyToggleGroup.AddCheckbox(Localization.Get("tip2"),
                 RoadSkins.policyInvertUnderground, (index) => OnPolicyInvertUndergroundSet(index));
 
 
@@ -155,7 +155,7 @@ namespace CSURLoader
                 ColorGSlider.tooltip = colorG.ToString();
                 ColorGSlider.parent.Find<UILabel>("Label").text = "G" + "(" + colorG.ToString() + ")";
                 if (levelLoaded) RoadSkins.ChangeAllColor();
-                Debug.Log($"colorR changed to" + colorG.ToString());
+                Debug.Log($"colorG changed to" + colorG.ToString());
                 SaveSetting();
             }
         }
@@ -173,7 +173,7 @@ namespace CSURLoader
                 ColorBSlider.tooltip = colorB.ToString();
                 ColorBSlider.parent.Find<UILabel>("Label").text = "B" + "(" + colorB.ToString() + ")";
                 if (levelLoaded) RoadSkins.ChangeAllColor();
-                Debug.Log($"colorR changed to" + colorB.ToString());
+                Debug.Log($"colorB changed to" + colorB.ToString());
                 SaveSetting();
             }
         }
