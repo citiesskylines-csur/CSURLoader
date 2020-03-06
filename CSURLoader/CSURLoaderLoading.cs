@@ -50,7 +50,7 @@ namespace CSURLoader
                         Utils.LinkBridgeMode(asset);
                     }
                 }
-                else if (OptionUI.changeAllRoadColor)
+                else if (asset != null && OptionUI.changeAllRoadColor)
                 {
                     if (asset.m_netAI is RoadAI)
                     {

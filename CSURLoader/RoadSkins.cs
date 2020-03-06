@@ -60,13 +60,15 @@ namespace CSURLoader
              || signature.StartsWith("5R") || signature.StartsWith("6R") || signature.StartsWith("7R")
              || signature.StartsWith("6DR4") || signature.StartsWith("6DR44") || signature.StartsWith("6DR4P4") || signature.StartsWith("6DR5P4")
              || signature.StartsWith("8DR2") || signature.StartsWith("8DR52")
-             || signature.StartsWith("6DR6") || signature.StartsWith("8DR4")) 
+             || signature.StartsWith("6DR6") || signature.StartsWith("8DR4") 
+             || signature.StartsWith("2DC8") || signature.StartsWith("2DC10") || signature.StartsWith("2DC12")) 
             {
                 return HorizontalTrafficLightSize.LARGE;
             } else if (signature.StartsWith("6D") || signature.StartsWith("7D") || signature.StartsWith("8D")
                     || signature.StartsWith("3R") || signature.StartsWith("4R")
                     || signature.StartsWith("4DR4") || signature.StartsWith("4DR34") || signature.StartsWith("4DR4P4") || signature.StartsWith("4DR5P4")
                     || signature.StartsWith("6DR2") || signature.StartsWith("6DR42") || signature.StartsWith("6DR5P2")
+                    || signature.StartsWith("2DC4") || signature.StartsWith("2DC6")
                 )
             {
                 return HorizontalTrafficLightSize.MEDIUM;
@@ -87,7 +89,7 @@ namespace CSURLoader
                 }
                 else if (OptionUI.changeAllRoadColor)
                 {
-                    if ((asset.m_netAI is RoadAI))
+                    if (asset != null && asset.m_netAI is RoadAI)
                     {
                         //Debug.Log("Process color change for " + asset.name.ToString());
                         Utils.SetColor(asset, roadColor);
@@ -101,7 +103,7 @@ namespace CSURLoader
             for (ushort i = 0; i < Singleton<NetManager>.instance.m_segments.m_size; i++)
             {
                 NetInfo asset = Singleton<NetManager>.instance.m_segments.m_buffer[i].Info;
-                if (Utils.IsCSUR(asset))
+                if (OptionUI.changeAllRoadColor || Utils.IsCSUR(asset))
                 {
                     Singleton<NetManager>.instance.UpdateSegmentRenderer(i, true);
                 }
@@ -109,7 +111,7 @@ namespace CSURLoader
             for (ushort i = 0; i < Singleton<NetManager>.instance.m_nodes.m_size; i++)
             {
                 NetInfo asset = Singleton<NetManager>.instance.m_nodes.m_buffer[i].Info;
-                if (Utils.IsCSUR(asset))
+                if (OptionUI.changeAllRoadColor || Utils.IsCSUR(asset))
                 {
                     Singleton<NetManager>.instance.UpdateNodeRenderer(i, true);
                 }
