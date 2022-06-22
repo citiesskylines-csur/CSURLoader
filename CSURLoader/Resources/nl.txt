@@ -1,0 +1,11 @@
+﻿road_color_setting	CSUR wegkleur instellingen
+change_all_sliders	Wijzig alle schuifbalken samen
+change_other_color	Verander ook andere wegkleuren
+road_prop_setting	CSUR weg prop instellingen (moet herladen worden)
+road_arrows	Rijstrookpijlen
+traffic_lights	Verkeerslichten
+median_signs	Middenberm borden
+traffic_cameras	Snelheidscamera's
+district_policy_setting	CSUR districtbeleid instellingen (moet herladen worden)
+tip1	Zet steunmuren voor wegen zonder voetpad alleen aan wanneer het fietsverbod-beleid actief is
+tip2	Zet ononderbroken lijnen voor hellingen en tunnels alleen aan wanneer het fietsverbod-beleid actief is
